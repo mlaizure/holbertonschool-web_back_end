@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""contains measure_time coroutine"""
+"""contains measure_time function"""
 import asyncio
 import time
 
