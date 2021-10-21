@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""contains FIFOCache class"""
+"""contains LIFOCache class"""
 
 BaseCaching = __import__('base_caching').BaseCaching
 
@@ -29,5 +29,5 @@ class LIFOCache(BaseCaching):
     def get(self, key):
         """gets item from cache"""
         if key is None or key not in self.cache_data:
-            return
+            return None
         return self.cache_data.get(key)
