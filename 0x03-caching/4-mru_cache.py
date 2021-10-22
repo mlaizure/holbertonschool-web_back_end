@@ -30,7 +30,6 @@ class MRUCache(BaseCaching):
         """gets item from cache and updates order to represent usage"""
         if key is None or key not in self.cache_data:
             return None
-        if key in self.cache_data:
-            self.order.remove(key)
+        self.order.remove(key)
         self.order.append(key)
         return self.cache_data.get(key)
