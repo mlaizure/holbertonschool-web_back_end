@@ -29,7 +29,6 @@ class LFUCache(BaseCaching):
         else:
             self.order[key] = 1
 
-
     def get(self, key):
         """gets item from cache and updates order to represent usage"""
         if key is None or key not in self.cache_data:
