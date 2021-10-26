@@ -46,7 +46,7 @@ class Server:
         hyper['page_size'] = len(data)
         hyper['page'] = page
         hyper['data'] = data
-        num_pages = len(self.__dataset) / page_size
+        num_pages = int(len(self.__dataset) / page_size)
         if len(self.__dataset) % page_size:
             num_pages += 1
         if page < num_pages:
