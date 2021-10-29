@@ -24,7 +24,7 @@ def get_db() -> mysql.connector.connection.MySQLConnection:
 
 def get_logger() -> logging.Logger:
     """returns a logging.Logger object with specified configuration"""
-    logger = logging.getLogger("user_data")
+    logger = logging.getLogger('user_data')
     logger.setLevel(logging.INFO)
     logger.propagate = False
     console_handler = logging.StreamHandler()
@@ -58,3 +58,25 @@ class RedactingFormatter(logging.Formatter):
         """filters values in log records"""
         return filter_datum(self.fields, self.REDACTION,
                             super().format(record), self.SEPARATOR)
+
+
+def main():
+    """connect to database, get and display all rows in the users table"""
+    db = get_db()
+    cursor = db.cursor(dictionary=True)
+    cursor.execute("SELECT * FROM users")
+    db_logger = get_logger()
+    for user_dict in cursor:
+        log_message = ''
+        for k, v in user_dict.items():
+            log_message += k + '=' + str(v) + '; '
+        log_message = log_message[:-1]
+        log_record = logging.LogRecord('user_data', logging.INFO, None, None,
+                                       log_message, None, None)
+        db_logger.handle(log_record)
+    cursor.close()
+    db.close()
+
+
+if __name__ == '__main__':
+    main()
