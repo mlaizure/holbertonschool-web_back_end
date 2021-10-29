@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""contains filter_datum function"""
+"""contains functionality for filtered logs for a db"""
 from typing import List
 import re
 import logging
