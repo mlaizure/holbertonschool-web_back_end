@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""contains hash_password function"""
+"""contains hash_password and is_valid functions"""
 import bcrypt
 
 
