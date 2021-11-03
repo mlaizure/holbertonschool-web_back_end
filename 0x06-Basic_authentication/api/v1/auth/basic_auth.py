@@ -6,6 +6,7 @@ from api.v1.auth.auth import Auth
 import base64
 from typing import TypeVar
 from models.user import User
+from models.base import DATA
 
 
 class BasicAuth(Auth):
@@ -45,6 +46,8 @@ class BasicAuth(Auth):
         """returns the User instance based on email and password"""
         if user_email is None or type(user_email) != str \
            or user_pwd is None or type(user_pwd) != str:
+            return None
+        if not DATA.get('User'):
             return None
         users = User.search({'email': user_email})
         if not users:
