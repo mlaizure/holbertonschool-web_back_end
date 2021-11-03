@@ -4,6 +4,7 @@ Authentication module for API
 """
 from flask import request
 from typing import List, TypeVar
+import fnmatch
 
 
 class Auth:
@@ -16,8 +17,10 @@ class Auth:
             alt_path = path[:-1]
         else:
             alt_path = path + '/'
-        if path in excluded_paths or alt_path in excluded_paths:
-            return False
+        for excluded_path in excluded_paths:
+            if fnmatch.fnmatch(path, excluded_path) or fnmatch.fnmatch(
+                    alt_path, excluded_path):
+                return False
         return True
 
     def authorization_header(self, request=None) -> str:
