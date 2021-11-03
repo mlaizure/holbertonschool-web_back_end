@@ -10,7 +10,7 @@ class Auth:
     """authentication handling"""
     def require_auth(self, path: str, excluded_paths: List[str]) -> bool:
         """determines if authorization required"""
-        if path is None or len(excluded_paths) == 0 or excluded_paths is None:
+        if path is None or excluded_paths is None or len(excluded_paths) == 0:
             return True
         if path[-1] == '/':
             alt_path = path[:-1]
