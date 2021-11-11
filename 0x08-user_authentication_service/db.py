@@ -40,3 +40,13 @@ class DB:
     def find_user_by(self, **kwargs) -> User:
         """returns first row found in users table as filtered by input args"""
         return self._session.query(User).filter_by(**kwargs).one()
+
+    def update_user(self, user_id: int, **kwargs) -> None:
+        """locates user using user_id then updates user from kwargs"""
+        user = self.find_user_by(id=user_id)
+        for k, v in kwargs.items():
+            if not hasattr(user, k):
+                raise ValueError
+            setattr(user, k, v)
+        self._session.commit()
+        return None
