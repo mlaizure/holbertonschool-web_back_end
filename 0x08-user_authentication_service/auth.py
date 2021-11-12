@@ -5,6 +5,12 @@ import bcrypt
 from db import DB
 from user import User
 from sqlalchemy.orm.exc import NoResultFound
+from uuid import uuid4
+
+
+def _generate_uuid() -> str:
+    """returns uuid as str"""
+    return str(uuid4())
 
 
 def _hash_password(password: str) -> bytes:
@@ -36,3 +42,12 @@ class Auth:
         if bcrypt.checkpw(password.encode(), user.hashed_password):
             return True
         return False
+
+    def create_session(self, email: str) -> str:
+        """returns session ID for user associated with email"""
+        try:
+            user = self._db.find_user_by(email=email)
+        except NoResultFound:
+            return None
+        self._db.update_user(user.id, session_id=_generate_uuid())
+        return user.session_id
