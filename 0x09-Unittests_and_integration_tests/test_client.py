@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """module for testing client.py"""
 import unittest
-from unittest.mock import patch, PropertyMock
+from unittest.mock import patch, PropertyMock, Mock
 from parameterized import parameterized, parameterized_class
 from client import GithubOrgClient
 from fixtures import TEST_PAYLOAD
@@ -77,8 +77,19 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
         url = args[0]
         mock_res = Mock(spec_set=Response)
         cls.patcher.return_value = mock_res
-        if url == 'http://api.github.com/orgs/google':
+        if url == 'https://api.github.com/orgs/google':
             mock_res.json.return_value = cls.org_payload
-        elif url == 'http://api.github.com/orgs/google/repos':
+        elif url == 'https://api.github.com/orgs/google/repos':
             mock_res.json.return_value = cls.repos_payload
         return mock_res
+
+    def test_public_repos(self):
+        """tests public_repos method"""
+        test = GithubOrgClient('google')
+        self.assertEqual(test.public_repos(), self.__class__.expected_repos)
+
+    def test_public_repos_with_license(self):
+        """test public_repos method with license arg"""
+        test = GithubOrgClient('google')
+        self.assertEqual(test.public_repos(license='apache-2.0'),
+                         self.__class__.apache2_repos)
