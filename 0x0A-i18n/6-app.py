@@ -46,7 +46,7 @@ def get_locale():
         elif not locale:
             locale = request.accept_languages.best_match(
                 app.config['LANGUAGES']) or \
-                BABEL_DEFAULT_LOCALE
+                Config.BABEL_DEFAULT_LOCALE
 
     return locale
 
