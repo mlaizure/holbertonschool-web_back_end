@@ -50,6 +50,7 @@ def get_locale():
 
     return locale
 
+
 @app.before_request
 def before_request():
     """sets user as global variable"""
