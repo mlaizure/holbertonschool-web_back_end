@@ -12,12 +12,13 @@ r = redis.Redis()
 def count_calls(method: Callable) -> Callable:
     """decorator to count times a URL was accessed in the last 10 sec"""
     @wraps(method)
-    def wrapper(self, *args) -> str:
+    def wrapper(*args) -> str:
         """wrapper function for count_calls function"""
         key = f'count:{args[0]}'
+        result = method(*args)
         r.incr(key)
-        r.expire(key, 10)
-        return method(*args)
+        r.setex('result', 10, result)
+        return result
     return wrapper
 
 
