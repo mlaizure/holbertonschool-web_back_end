@@ -6,6 +6,18 @@ from uuid import uuid4
 from functools import wraps
 
 
+def call_history(method: Callable) -> Callable:
+    """store the history of inputs and outputs for a method"""
+    @wraps(method)
+    def wrapper(self, *args) -> bytes:
+        """wrapper function for call_history function"""
+        self._redis.rpush(f'{method.__qualname__}:inputs', str(args))
+        output = method(self, *args)
+        self._redis.rpush(f'{method.__qualname__}:outputs', output)
+        return output
+    return wrapper
+
+
 def count_calls(method: Callable) -> Callable:
     """decorator to increment count each time method is called"""
     @wraps(method)
@@ -24,6 +36,7 @@ class Cache():
         self._redis.flushdb()
 
     @count_calls
+    @call_history
     def store(self, data: Union[str, bytes, int, float]) -> str:
         """generates key using uuid4 and stores data in Redis"""
         key = str(uuid4())
