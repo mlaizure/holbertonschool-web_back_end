@@ -6,6 +6,22 @@ from uuid import uuid4
 from functools import wraps
 
 
+def replay(method: Callable) -> str:
+    """display count and history of calls for a method"""
+    func_name = method.__qualname__
+    input_key = f'{func_name}:inputs'
+    output_key = f'{func_name}:outputs'
+    r = redis.Redis()
+    count = r.get(func_name).decode('utf-8')
+    input_val = r.lrange(input_key, 0, -1)
+    output_val = r.lrange(output_key, 0, -1)
+
+    print(f'{func_name} was called {count} times:')
+    for inputs, outputs in zip(input_val, output_val):
+        print(f'{func_name}(*{inputs.decode("utf-8")}) ->'
+              f'{outputs.decode("utf-8")}')
+
+
 def call_history(method: Callable) -> Callable:
     """store the history of inputs and outputs for a method"""
     @wraps(method)
