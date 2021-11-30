@@ -6,7 +6,7 @@ from uuid import uuid4
 from functools import wraps
 
 
-def replay(method: Callable) -> str:
+def replay(method: Callable) -> None:
     """display count and history of calls for a method"""
     func_name = method.__qualname__
     input_key = f'{func_name}:inputs'
