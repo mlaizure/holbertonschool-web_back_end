@@ -9,8 +9,4 @@ export default class Building {
   get sqft() {
     return this._sqft;
   }
-
-  set sqft(newSqft) {
-    this._sqft = newSqft;
-  }
 }
