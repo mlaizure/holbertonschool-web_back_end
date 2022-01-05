@@ -8,8 +8,8 @@ describe('#calculateNumber()', function () {
   it('should return 4 when adding 2 and 2.1', function () {
     assert.strictEqual(calculateNumber(2, 2.1), 4);
   });
-  it('should return 5 when adding 2 and 2.8', function () {
-    assert.strictEqual(calculateNumber(2, 2.8), 5);
+  it('should return 5 when adding 2.8 and 2', function () {
+    assert.strictEqual(calculateNumber(2.8, 2), 5);
   });
   it('should return 4 when adding 1.7 and 2', function () {
     assert.strictEqual(calculateNumber(1.7, 2), 4);
